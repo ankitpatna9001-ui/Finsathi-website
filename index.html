@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FinSaathi | Private Admin Portal</title>
+<style>
+:root{--navy:#10243a;--blue:#1769e0;--mint:#dff8ee;--bg:#f4f7fb;--ink:#172b4d;--muted:#62748a}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(120deg,#10243a,#1769e0);color:#fff;padding:23px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:25px;font-weight:850}.brand span{color:#9cf0d0}header p{margin:4px 0;color:#dbe8ff;font-size:13px}.badge{border:1px solid #ffffff66;border-radius:99px;padding:8px 12px;font-size:12px}
+main{max-width:1080px;margin:28px auto;padding:0 16px}.panel{background:#fff;border:1px solid #e5ebf3;border-radius:18px;padding:22px;box-shadow:0 8px 24px #12233d08;margin-bottom:18px}
+h1{font-size:clamp(28px,4vw,42px);margin:10px 0}h2{margin:0 0 14px}.muted{color:var(--muted);line-height:1.55}.eyebrow{color:var(--blue);font-weight:800;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:#f7f9fd;border:1px solid #e7edf5;padding:17px;border-radius:14px}.card h3{margin:6px 0}.card p{font-size:14px;color:var(--muted);line-height:1.5}
+button{border:0;border-radius:10px;padding:11px 15px;background:#edf3fb;color:var(--ink);font-weight:750;cursor:pointer}.primary{background:var(--blue);color:#fff}.danger{background:#ffe9e9;color:#a12626}
+label{display:block;font-weight:700;font-size:13px;margin:0 0 6px}input,select,textarea{width:100%;padding:12px;border:1px solid #d5deea;border-radius:10px;font:inherit;background:white}textarea{min-height:78px;resize:vertical}.field{margin-bottom:13px}.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.wide{grid-column:1/-1}
+.hidden{display:none!important}.notice{background:#fff7df;border:1px solid #f4d98b;border-radius:12px;padding:13px;font-size:13px;line-height:1.5;color:#684b00;margin:14px 0}.success{display:none;background:#e4fbef;color:#146344;padding:12px;border-radius:10px;margin-top:12px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.tabs button.active{background:var(--blue);color:#fff}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:11px;border-bottom:1px solid #e8edf4;white-space:nowrap}th{font-size:11px;color:var(--muted);text-transform:uppercase}.pill{padding:5px 8px;border-radius:99px;background:#fff1c9;color:#795600;font-size:11px;font-weight:800}
+footer{text-align:center;padding:26px;color:var(--muted);font-size:12px}
+@media(max-width:720px){.grid,.formgrid{grid-template-columns:1fr}.wide{grid-column:auto}}
+</style></head>
+<body>
+<header><div><div class="brand">Fin<span>Saathi</span></div><p>Private Loan & Account Management Portal</p></div><div class="badge">ADMIN-ONLY DEMO</div></header>
+<main>
+<section id="login" class="panel" style="max-width:470px;margin:35px auto">
+<div class="eyebrow">Restricted access</div><h2>Admin sign-in</h2><p class="muted">इस डेमो को खोलने के लिए एडमिन पासवर्ड डालें।</p>
+<form id="loginForm"><div class="field"><label>Admin password</label><input id="password" type="password" required autocomplete="current-password"></div><button class="primary">Sign in</button><div id="loginError" class="success" style="background:#ffe9e9;color:#a12626"></div></form>
+<div class="notice"><b>Security note:</b> यह front-end demo है। पासवर्ड कोड में दिखाई दे सकता है और यह वास्तविक सुरक्षित लॉगिन नहीं है। लाइव ग्राहक डेटा के लिए server-side authentication, encrypted database, access controls और security testing जरूरी हैं।</div>
+</section>
+<section id="app" class="hidden">
+<div class="panel"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><div><div class="eyebrow">Admin workspace</div><h1>Welcome, Admin</h1><p class="muted">ग्राहक का अनुरोध दर्ज करें, फिर अधिकृत बैंक/वित्तीय संस्था के साथ प्रक्रिया पूरी करें।</p></div><button id="logout" class="danger">Logout</button></div>
+<div class="notice">यह पोर्टल वास्तविक बैंक खाता नहीं खोलता, लोन स्वीकृत/जारी नहीं करता, KYC नहीं करता और पैसे ट्रांसफर नहीं करता। असली ग्राहक का Aadhaar/PAN, OTP, PIN, पासवर्ड, Account Number या CIF Number इस डेमो में सेव न करें।</div>
+<div class="grid"><div class="card"><div class="eyebrow">Loan requests</div><h3 id="loanCount">0</h3><p>आपके द्वारा दर्ज लोन आवेदन</p></div><div class="card"><div class="eyebrow">Account requests</div><h3 id="accountCount">0</h3><p>अकाउंट खोलने के अनुरोध</p></div><div class="card"><div class="eyebrow">Control</div><h3>Admin only</h3><p>इस डेमो में ग्राहक के लिए अलग public page नहीं है।</p></div></div></div>
+<div class="panel"><div class="tabs"><button class="active" data-pane="loanPane">Add loan request</button><button data-pane="accountPane">Add account request</button><button data-pane="customerPane">Customer records</button><button data-pane="managePane">Manage requests</button></div>
+<div id="loanPane"><h2>ग्राहक का Loan Request दर्ज करें</h2><form id="loanForm"><div class="formgrid">
+<div class="field"><label>ग्राहक का नाम *</label><input name="name" required maxlength="80"></div>
+<div class="field"><label>मोबाइल नंबर *</label><input name="phone" required pattern="[0-9]{10}" maxlength="10" placeholder="10 digit"></div>
+<div class="field"><label>लोन का प्रकार *</label><select name="type" required><option value="">चुनें</option><option>Personal Loan</option><option>Business Loan</option><option>Education Loan</option><option>Vehicle Loan</option><option>Home Loan</option><option>Other Loan</option></select></div>
+<div class="field"><label>माँगी गई राशि (₹) *</label><input name="amount" type="number" min="1000" max="10000000" required></div>
+<div class="field"><label>अवधि</label><select name="tenure"><option>अभी तय नहीं</option><option>6 महीने</option><option>12 महीने</option><option>24 महीने</option><option>36 महीने</option><option>48 महीने</option><option>60 महीने</option></select></div>
+<div class="field"><label>स्थिति</label><select name="status"><option>New enquiry</option><option>Documents pending</option><option>Referred to authorized lender</option><option>Approved by lender</option><option>Rejected by lender</option><option>Closed</option></select></div>
+<div class="field wide"><label>संपर्क/फॉलो-अप नोट (संवेदनशील जानकारी न लिखें)</label><textarea name="notes" maxlength="500"></textarea></div></div><button class="primary">Save loan request</button><div class="success" id="loanSuccess"></div></form></div>
+<div id="accountPane" class="hidden"><h2>ग्राहक का Account Opening Request दर्ज करें</h2><form id="accountForm"><div class="formgrid">
+<div class="field"><label>ग्राहक का नाम *</label><input name="name" required maxlength="80"></div>
+<div class="field"><label>मोबाइल नंबर *</label><input name="phone" required pattern="[0-9]{10}" maxlength="10"></div>
+<div class="field"><label>ईमेल (वैकल्पिक)</label><input name="email" type="email" maxlength="120"></div>
+<div class="field"><label>अकाउंट प्रकार *</label><select name="type" required><option value="">चुनें</option><option>Savings Account</option><option>Current Account</option><option>Salary Account</option><option>Other</option></select></div>
+<div class="field"><label>बैंक/शाखा (वैकल्पिक)</label><input name="bank" maxlength="120"></div>
+<div class="field"><label>स्थिति</label><select name="status"><option>New enquiry</option><option>Customer contacted</option><option>Referred to authorized bank</option><option>Opened by bank (verify externally)</option><option>Closed</option></select></div>
+<div class="field wide"><label>फॉलो-अप नोट (संवेदनशील जानकारी न लिखें)</label><textarea name="notes" maxlength="500"></textarea></div></div><button class="primary">Save account request</button><div class="success" id="accountSuccess"></div></form></div>
+<div id="customerPane" class="hidden"><h2>Customer account details (manual entry)</h2><div class="notice"><b>महत्वपूर्ण:</b> यह डेमो डेटा सिर्फ इसी ब्राउज़र/डिवाइस में सेव करता है। असली ग्राहक का Account Number/CIF यहाँ सेव न करें—यह सुरक्षित बैंकिंग सिस्टम नहीं है। टेस्ट के लिए नकली विवरण इस्तेमाल करें।</div><form id="customerForm"><div class="formgrid">
+<div class="field"><label>ग्राहक का नाम *</label><input name="name" required maxlength="100"></div>
+<div class="field"><label>मोबाइल नंबर (वैकल्पिक)</label><input name="phone" pattern="[0-9]{10}" maxlength="10" placeholder="10 digit"></div>
+<div class="field"><label>Account Number (डेमो/टेस्ट के लिए)</label><input name="accountNo" maxlength="40" autocomplete="off"></div>
+<div class="field"><label>CIF Number (डेमो/टेस्ट के लिए)</label><input name="cifNo" maxlength="40" autocomplete="off"></div>
+<div class="field"><label>बैंक का नाम</label><input name="bank" maxlength="100"></div>
+<div class="field"><label>रिकॉर्ड की स्थिति</label><select name="status"><option>Draft</option><option>Verified externally</option><option>Inactive</option></select></div>
+<div class="field wide"><label>नोट (संवेदनशील जानकारी न लिखें)</label><textarea name="notes" maxlength="300"></textarea></div></div><button class="primary">Save customer record</button><div class="success" id="customerSuccess"></div></form><hr style="border:0;border-top:1px solid #e8edf4;margin:22px 0"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><h3>Saved customer records</h3><button id="exportCustomers">Export customer records CSV</button></div><div id="customerTable"></div></div>
+<div id="managePane" class="hidden"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><h2>All requests</h2><button id="export">Export CSV</button></div><div class="tabs"><button class="active" data-filter="all">All</button><button data-filter="loans">Loans</button><button data-filter="accounts">Accounts</button></div><div id="tables"></div><p><button id="clear" class="danger">Delete all demo data</button></p></div>
+</div></section>
+</main><footer>FinSaathi • Private admin demo only • Not a bank, lender, NBFC or financial institution.</footer>
+<script>
+const STORE='finsaathi_private_demo_v2';const DEMO_PASSWORD='demo123';let filter='all';
+const read=()=>{try{const d=JSON.parse(localStorage.getItem(STORE))||{};return {loans:d.loans||[],accounts:d.accounts||[],customers:d.customers||[]}}catch(e){return{loans:[],accounts:[],customers:[]}}};const save=d=>localStorage.setItem(STORE,JSON.stringify(d));
+const ref=p=>p+'-'+Math.random().toString(36).slice(2,8).toUpperCase();
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+document.getElementById('loginForm').onsubmit=e=>{e.preventDefault();if(document.getElementById('password').value===DEMO_PASSWORD){sessionStorage.setItem('fsAdminDemo','yes');showApp()}else{let x=document.getElementById('loginError');x.style.display='block';x.textContent='पासवर्ड सही नहीं है।'}};
+function showApp(){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');render()}
+if(sessionStorage.getItem('fsAdminDemo')==='yes')showApp();
+document.getElementById('logout').onclick=()=>{sessionStorage.removeItem('fsAdminDemo');document.getElementById('app').classList.add('hidden');document.getElementById('login').classList.remove('hidden');document.getElementById('password').value=''};
+document.querySelectorAll('[data-pane]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-pane]').forEach(x=>x.classList.toggle('active',x===b));['loanPane','accountPane','customerPane','managePane'].forEach(id=>document.getElementById(id).classList.toggle('hidden',id!==b.dataset.pane))});
+document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));renderTables()});
+function formObj(form){return Object.fromEntries(new FormData(form).entries())}
+function add(formId,group,prefix,successId){document.getElementById(formId).onsubmit=e=>{e.preventDefault();if(sessionStorage.getItem('fsAdminDemo')!=='yes')return;let d=read(),x=formObj(e.target);x.ref=ref(prefix);x.created=new Date().toISOString();d[group].unshift(x);save(d);let s=document.getElementById(successId);s.style.display='block';s.textContent='Saved. Reference ID: '+x.ref;e.target.reset();render()}}
+add('loanForm','loans','LN','loanSuccess');add('accountForm','accounts','AC','accountSuccess');
+document.getElementById('customerForm').onsubmit=e=>{e.preventDefault();if(sessionStorage.getItem('fsAdminDemo')!=='yes')return;const d=read(),x=formObj(e.target);x.ref=ref('CU');x.created=new Date().toISOString();d.customers.unshift(x);save(d);const box=document.getElementById('customerSuccess');box.style.display='block';box.textContent='Demo record saved. Reference ID: '+x.ref;e.target.reset();render()};
+function render(){const d=read();document.getElementById('loanCount').textContent=d.loans.length;document.getElementById('accountCount').textContent=d.accounts.length;renderTables();renderCustomers()}
+function renderTables(){const d=read(),groups=filter==='all'?['loans','accounts']:[filter];let out='';for(const g of groups){const arr=d[g];out+=`<h3>${g==='loans'?'Loan requests':'Account requests'}</h3><div class="tablewrap"><table><thead><tr><th>Reference</th><th>Name</th><th>Phone</th><th>Type</th><th>Amount / Bank</th><th>Status</th><th>Update</th><th>Delete</th></tr></thead><tbody>`;
+out+=arr.map(x=>`<tr><td>${esc(x.ref)}</td><td>${esc(x.name)}</td><td>${esc(x.phone)}</td><td>${esc(x.type)}</td><td>${g==='loans'?'₹'+esc(x.amount):esc(x.bank||'—')}</td><td>${esc(x.status)}</td><td><select onchange="updateStatus('${g}','${x.ref}',this.value)">${(g==='loans'?['New enquiry','Documents pending','Referred to authorized lender','Approved by lender','Rejected by lender','Closed']:['New enquiry','Customer contacted','Referred to authorized bank','Opened by bank (verify externally)','Closed']).map(s=>`<option ${s===x.status?'selected':''}>${s}</option>`).join('')}</select></td><td><button onclick="deleteRow('${g}','${x.ref}')">Delete</button></td></tr>`).join('')||'<tr><td colspan="8">No records.</td></tr>';
+out+='</tbody></table></div>'}document.getElementById('tables').innerHTML=out}
+function renderCustomers(){const d=read();const out='<div class="tablewrap"><table><thead><tr><th>Ref</th><th>Name</th><th>Phone</th><th>Account No.</th><th>CIF No.</th><th>Bank</th><th>Status</th><th>Delete</th></tr></thead><tbody>'+d.customers.map(x=>`<tr><td>${esc(x.ref)}</td><td>${esc(x.name)}</td><td>${esc(x.phone||'—')}</td><td>${esc(x.accountNo||'—')}</td><td>${esc(x.cifNo||'—')}</td><td>${esc(x.bank||'—')}</td><td>${esc(x.status||'Draft')}</td><td><button onclick="deleteCustomer('${x.ref}')">Delete</button></td></tr>`).join('')||'<tr><td colspan="8">No customer records saved.</td></tr>'+'</tbody></table></div>';document.getElementById('customerTable').innerHTML=out}
+window.deleteCustomer=id=>{if(confirm('Delete this customer record from this browser?')){const d=read();d.customers=d.customers.filter(x=>x.ref!==id);save(d);render()}};
+document.getElementById('exportCustomers').onclick=()=>{const d=read(),rows=[['Reference','Name','Phone','Account Number','CIF Number','Bank','Status','Notes','Created'],...d.customers.map(x=>[x.ref,x.name,x.phone||'',x.accountNo||'',x.cifNo||'',x.bank||'',x.status||'',x.notes||'',x.created||''])];const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='finsaathi-customer-records-demo.csv';a.click();URL.revokeObjectURL(a.href)};
+window.updateStatus=(g,id,status)=>{let d=read(),x=d[g].find(x=>x.ref===id);if(x){x.status=status;save(d);render()}};window.deleteRow=(g,id)=>{if(confirm('Delete this request?')){let d=read();d[g]=d[g].filter(x=>x.ref!==id);save(d);render()}};
+document.getElementById('clear').onclick=()=>{if(confirm('Delete ALL demo requests from this browser?')){save({loans:[],accounts:[],customers:[]});render()}};
+document.getElementById('export').onclick=()=>{const d=read(),rows=[['Category','Reference','Name','Phone','Type','Amount','Bank','Status','Notes','Created'],...d.loans.map(x=>['Loan',x.ref,x.name,x.phone,x.type,x.amount,'',x.status,x.notes||'',x.created]),...d.accounts.map(x=>['Account',x.ref,x.name,x.phone,x.type,'',x.bank||'',x.status,x.notes||'',x.created])];const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='finsaathi-admin-requests.csv';a.click();URL.revokeObjectURL(a.href)};
+</script></body></html>
